@@ -1,0 +1,323 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/vaadin-progress-bar/vaadin-progress-bar.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view4">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      .infoWrapper {
+        width: 1024px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+      }
+
+      .imgWrapper {
+      	display: inline-block;
+      }
+
+      .imgWrapper .smallImgs {
+      	@apply(--layout-horizontal);             
+      }
+
+      .imgWrapper .smallImgs iron-image {
+        width: 89px;
+        height: 89px;
+        margin-right: 7px;
+        margin-top: 10px;
+        background-color: #efefef;
+        cursor: pointer;
+      }
+
+      .pcinfo {
+    		display: inline-block;
+    		width: 340px;		
+    		max-height: 360px;	
+    		text-align: left;			
+    		padding: 10px;
+        margin-left: 50px;
+    		vertical-align: top;			
+  	  }		
+
+      .pcinfo .topwrap {
+        @apply(--layout-horizontal); 
+        text-align: center;         
+      }
+
+      .pcinfo .topwrap .fieldMaxPrice {
+        margin-left: 40px;
+      }
+    
+      .pcinfo .pField {
+        margin-bottom: 30px;
+        text-align: center;
+      }  		
+
+      .pcinfo .pField .pTitle {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: left;
+        color: #00b9e6;
+      }
+
+      .pcinfo .topwrap .pTitle {
+        text-align: center;
+      }
+
+      .pcinfo .pField .pValue {
+        width: 130px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        color: #555555;
+      }
+
+      .pcinfo .pField .htitle {
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: -0.8px;
+        text-align: left;
+        color: #555555;
+      }
+
+      .pcinfo .pField .value {
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 1.11;
+        letter-spacing: -0.6px;
+        text-align: left;
+        color: #000000;
+      }
+
+      .selectWrapper {
+        width: 1024px;
+        margin: 0 auto;
+        margin-top: 40px;
+      }
+
+      .selectWrapper .descTr{
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.17;
+        color: #00b9e6;
+      }
+
+      .selectWrapper .descNo {
+        font-size: 14px;
+        line-height: 2.0;
+        text-align: left;
+        color: #555555;
+      }
+
+      .selectWrapper .cardsWrapper {
+        @apply(--layout-horizontal);      
+        @apply(--layout-center-center);
+        @apply(--layout-wrap);      
+        width: 100%;                    
+        margin-bottom: 40px;    
+        overflow: hidden; 
+      }
+
+      .selectWrapper .centerCard {      
+        width: 320px;
+        height: 106px;
+        @apply(--layout-horizontal);  
+        @apply(--layout-justified);
+        @apply(--layout-center);
+        cursor: pointer;
+      }
+
+      .selectWrapper .centerCard .info .cate {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: -0.5px;
+        text-align: left;
+        color: #00b9e6;
+      }
+
+      .selectWrapper .centerCard .info .bizname {
+        font-size: 14px;
+        font-weight: 500;
+        text-align: left;
+        color: #000000;
+        margin-top: 10px;
+      }
+
+      .selectWrapper .centerCard .info .area {
+        font-size: 12px;
+        font-weight: 300;
+        letter-spacing: -0.5px;
+        text-align: left;
+        color: #000000;
+      }
+
+      .selectWrapper .centerCard .info .score {
+        font-size: 13px;
+        letter-spacing: -0.5px;
+        text-align: left;
+        color: #a4a4a4;
+        margin-top: 13px;
+      }
+
+      .selectWrapper .centerCard .priceWrapper .desc {
+        font-size: 12px;
+        font-weight: 500;
+        text-align: right;
+        color: #a4a4a4;
+      }
+
+      .selectWrapper .centerCard .priceWrapper .price {
+        font-size: 18px;
+        font-weight: 500;
+        text-align: right;
+        color: #00b9e6;
+      }
+
+
+      .inquireWrapper {
+        width: 1024px;
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+
+      .inquireWrapper .descTr {
+         font-size: 24px;
+        font-weight: bold;
+        line-height: 1.17;
+        color: #00b9e6;
+      }
+
+      .inquireWrapper .descNo {
+        font-size: 14px;
+        line-height: 2.0;
+        text-align: left;
+        color: #555555;
+      }
+
+       .pbMove {
+        width: 350px;
+        height: 40px;
+        border-radius: 20px;
+        /*border: solid 2px #02be29;                        */
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        background: #02be29;
+        color: #FFF;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        cursor: pointer;
+      }
+
+      .progbar {
+        width: 400px;
+      }
+
+      vaadin-progress-bar {
+        height: 25px;
+      }
+    </style>
+
+    <div class="infoWrapper">
+    	<div class="imgWrapper">
+    		<iron-image id="imgBig" src="../images/img-01.jpg" sizing="contain" width="380" height="380"></iron-image>    		
+    	</div>
+
+    	<div class="pcinfo">
+  			<div class="post-info">				
+           <div class="topwrap">              
+
+    					<div class="pField">              
+                <div class="pTitle">참여자수</div>
+                <div class="pValue">3명 / 10명</div>
+              </div>              
+              <div class="pField fieldMaxPrice">              
+                <div class="pTitle" id="titleMaxPrice">Total value</div>
+                <div class="pValue" id="valMaxPrice">200 MOIM</div>
+              </div>
+            </div>
+
+            <div class="pField">
+                <vaadin-progress-bar value="0.3"></vaadin-progress-bar>
+            </div>
+
+            <div class="pField">              
+                <div class="pTitle">모임 제목</div>
+                <div>블록체인 독서회</div>
+              </div>                          
+
+  					<div class="pField">
+              <div class="pTitle">모임기간</div>
+              <div>2018년 3월 1일 ~ 2018년 6월 30일</div>
+            </div>
+            
+            <div class="pField">
+              <div class="htitle">리더</div>
+              <div class="value">Will Park</div>
+            </div>
+
+           
+  					<div class="pField">
+              <div class="htitle">모임 정보</div> 
+              <div class="value">
+                블록체인 책을 보며 연구하는 독서모임입니다.                
+              </div>
+            </div>	
+
+            <paper-button class="pbMove" on-tap="payment" raised>토큰 구매</paper-button>				
+  			</div>
+		  </div>				
+    </div>
+
+
+  
+
+      
+
+  </template>
+  <script>
+    class MyView4 extends Polymer.Element {
+    	static get is() { return 'my-view4'; }
+
+    	static get properties() {
+	      return {             
+          eidx: Number,
+
+          data: {
+            type: Object,
+            observer: '_dataChanged'
+          },
+
+          selitem: {
+            type: Object
+          }
+	      }
+	  	}
+
+
+      ready() {
+        super.ready();
+
+        this.data = {
+          numParticipants: 4,
+          title: '가구 팔아요',
+          category: '가전｜노트북',
+          year: 2004,
+          content: '이 헌법시행 당시의 법령과 조약은 이 헌법에 위배되지 아니하는 한 그 효력을 지속한다. 모든 국민은 소급입법에 의하여 참정권의 제한을 받거나 재산권을 박탈당하지 아니한다.'
+        }
+      }
+
+      
+    }
+  	window.customElements.define(MyView4.is, MyView4);
+  </script>
+</dom-module>

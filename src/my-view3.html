@@ -1,15 +1,9 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<!-- <link rel="import" href="tina-payment-dlog.html"> -->
 <link rel="import" href="shared-styles.html">
+
 
 <dom-module id="my-view3">
   <template>
@@ -19,21 +13,203 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px;
       }
+
+      .btns .btnPayment {
+        width: 140px;
+        height: 30px;
+        border-radius: 20px;
+        border: solid 2px #02be29;                        
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        /*background: #02be29;*/
+        background: #FFF;
+        color: #02be29;
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        line-height: 30px;
+        cursor: pointer;
+      }
+
+      .gridview-panel {
+        @apply(--layout-vertical);            
+        width: 100%;      
+        
+        padding-top: 20px;            
+      }
+
+      .item-list {      
+        @apply(--layout-horizontal);      
+        @apply(--layout-center-center);
+        @apply(--layout-wrap);      
+        width: 100%;                    
+        margin-bottom: 40px;    
+        overflow: hidden; 
+      }
+
+      .gridview-panel .card {
+        position: relative;
+        width: 315px;
+        height: 360px;
+        @apply(--layout-vertical);          
+        @apply(--layout-center);
+        cursor: pointer;
+        padding: 0px;
+      }
+
+      .gridview-panel .card .card__shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /*width: 315px;
+        height: 360px;*/
+        
+        background-image: linear-gradient(180deg, rgba(0,0,0,0.3) 0, #000 100%);
+        opacity: 0.4;
+      }
+
+      .gridview-panel .card iron-image {
+        width: 220px;
+        height: 196px;
+      }
+
+      .gridview-panel .card .info {
+        margin-left: 16px;
+      }
+
+      .gridview-panel .card .info .topic {
+        font-size: 12px;
+        text-align: center;
+        color: #000000;
+        margin-top: 10px;
+      }
+
+      .gridview-panel .card .info .ttitle {
+        width: 266px;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+        color: #000000;
+        margin-top: 10px;
+      }
+
+      .gridview-panel .card .info .author {
+        margin-top: 10px;
+        font-size: 13px;
+        text-align: center;
+        color: #000000;
+      }
+
+      .pbMove {
+        width: 150px;
+        height: 40px;
+        border-radius: 20px;
+        /*border: solid 2px #02be29;                        */
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        background: #02be29;
+        color: #FFF;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
     </style>
 
-    <div class="card">
-      <div class="circle">3</div>
-      <h1>View Three</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
-    </div>
+
+    <div class="gridview-panel">      
+      <div class="item-list">
+        <template id="grid" is="dom-repeat" items="{{data}}">           
+          <div class="card" data-idx$="[[item.idx]]" on-click="_moveProb">
+            <iron-image src="[[_setPhoto(item.photo)]]" sizing="contain"></iron-image>
+            
+
+            <div class="info">
+              <div class="topic">[[item.topic]] / [[item.day]]</div>
+              <div class="ttitle">[[item.title]]</div>
+              <div class="author">[[item.author]]</div>              
+            </div>
+
+            <paper-button class="pbMove" on-tap="moveProb">참여하기</paper-button>
+          </div>
+
+        </template>
+      </div>      
+    </div>   
+    
   </template>
 
   <script>
     class MyView3 extends Polymer.Element {
       static get is() { return 'my-view3'; }
+
+      static get properties() {
+        return {
+          data: {
+            type: Object
+          }          
+        }
+      }
+
+      ready() {
+        super.ready();
+
+        this.data = [
+          {
+            photo: 'img-01.jpg',
+            topic: '블록체인 독서회',
+            title: '블록체인 탐험대 모집',
+            author: 'WillPark',       
+            day: '~2018년 2월 28일 마감'     
+          },
+          {
+            photo: 'img-02.jpg',
+            topic: '얆은책',
+            title: '얇은책만 골라 읽자',
+            author: '딘두',            
+            day: '~2018년 2월 28일 마감' 
+          },
+          {
+            photo: 'manifest/icon-144x144.png',
+            topic: '회사와인간',
+            title: '직장인들 독서회',
+            author: '서울남',           
+            day: '~2018년 2월 28일 마감'  
+          }
+
+        ];
+      }
+
+      _setPhoto(photo) {
+        return "/images/"+photo;
+      }
+
+      _showPaymentDlog(e) {
+        this.$.paymentDlog.open();
+      }
+
+      _isRegisteredTopic(item) {        
+        if(this.data){
+          const prob_idx = item.idx;
+          const userprobs = this.data.userprobs;
+          
+          for(let i=0; i<userprobs.length; i++){
+            if(userprobs[i].prob_idx==prob_idx){
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+
+      _moveProb(e) {
+        location.href = "/view4";
+      }
     }
 
     window.customElements.define(MyView3.is, MyView3);
   </script>
 </dom-module>
+

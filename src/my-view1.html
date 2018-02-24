@@ -9,6 +9,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="my-token-dialog.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
@@ -19,19 +25,336 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px;
       }
+
+       paper-dropdown-menu {
+        width: 200px;
+        margin-right: 20px;
+      }
+
+      paper-item {
+        width: 200px;
+      }
+
+      .rootWrapper {
+        width: 560px;
+        
+        @apply(--layout-vertical);        
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 60px; 
+      }
+
+      .headerbar {
+        margin-bottom: 15px;
+      }
+
+      .headerbar .htitle {
+        font-size: 36px;
+        font-weight: 800;
+        text-align: center;
+        color: #000000;
+      }
+
+      .headerbar .line {
+        width: 70px;
+        height: 1px;
+        background: #000;
+        margin: 0 auto;
+      }
+
+      .createWrapper {
+        width: 100%;
+      }
+
+      .createWrapper .moField {
+        margin-bottom: 38px;
+      }
+
+      .createWrapper .moField.howrap {
+        @apply --layout-horizontal;
+      }
+
+      .createWrapper .moField .moHeader {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;
+        color: #000000;
+        margin-bottom: 5px;
+      }
+
+      .createWrapper .ipdate {
+        width: 200px;
+      }
+
+      .createWrapper input {
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .createWrapper .percent {
+        width: 150px;
+      }
+
+      .createWrapper #taPurpose {
+        width: 100%;
+        height: 120px;
+        font-size: 15px;
+        padding: 10px;
+      }      
+
+      .createWrapper .btnType {
+        width: 180px;
+        height: 40px;
+        border-radius: 20px;
+        border: solid 1px #d2a270;
+        margin-top: 20px;
+      }      
+
+      .createWrapper .iron-selected.btnType {
+        background: #d2a270;
+        color: #fff;
+      }      
+
+      .createWrapper #file_word1 {
+        margin-top: 20px;        
+        font-size: 15px;
+        text-align: left;
+      }
+
+      .createWrapper #taMessage {
+        width: 100%;
+        height: 120px;        
+        font-size: 15px;
+        padding: 10px;
+      }
+
+      .createWrapper #taDocumentAll {
+        width: 100%;
+        height: 360px;        
+        font-size: 15px;
+        padding: 10px;
+      }
+
+      .createWrapper .htext3 {
+        margin-bottom: 5px;
+        font-size: 12px;      
+      }
+
+      .priceWrapper {
+        @apply --layout-horizontal;
+        @apply --layout-start-justified;                  
+        margin-bottom: 20px;
+      }
+
+      .priceWrapper .numwords {
+        margin-right: 10px;
+        margin-top: 10px;
+      }
+
+      .priceWrapper .numwords .word1 {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;        
+      }
+
+      .priceWrapper .numwords .word2 {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: right;
+        color: #d2a270;
+      }
+
+      
+
+      #pbNext {
+        width: 150px;
+        height: 40px;
+        border-radius: 20px;
+        /*border: solid 2px #d2a270;*/
+        color: #FFF;
+        background: #02be29;
+      }
+
     </style>
 
-    <div class="card">
+  <!--   <div class="card">
       <div class="circle">1</div>
       <h1>View One</h1>
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+    </div> -->
+
+    <div class="rootWrapper">
+      
+        <div class="headerbar">
+          <div class="htitle">Create your MOIM token</div>
+          <div class="line"></div>
+        </div>
+
+        <div class="createWrapper">          
+
+          <div class="moField">
+            <div class="moHeader">모임제목</div>
+            <input id="piTitle" placeholder="title" name="title" value="{{title::input}}" required maxlength="40" auto-validate/>  
+          </div>
+
+          <div class="moField">
+            <div class="moHeader">기수</div>
+            <input id="piTitle" placeholder="title" name="title" value="1기" readonly required maxlength="40" auto-validate/>  
+          </div>
+
+          <div class="moField">
+            <div class="moHeader">모집인원</div>
+            <input id="piTitle" placeholder="num of people" name="title" value="{{numpeople:input}}" required maxlength="40" auto-validate/>  
+          </div>
+          
+          <div class="moField">
+            <div class="moHeader">최대 발행량</div>
+            <input id="piMaxtoken" placeholder="max token" name="maxtoken" value="{{maxtoken::change}}" required maxlength="40" auto-validate/>  
+          </div>          
+
+          <div class="moField howrap">
+            <div>
+              <div class="moHeader">모집시작일(ICO starting date)</div>
+              <input id="piIcoStartDate" class="ipdate" type="date" placeholder="ico start date" name="icostartdate"  required maxlength="40" auto-validate/>  
+            </div>
+            <div>
+              <div class="moHeader">모집마감일(ICO end date)</div>
+              <input id="piIcoEndDate" type='date' class="ipdate" placeholder="ico end date" name="icoenddate"  required maxlength="40" auto-validate/>  
+            </div>
+          </div>            
+          
+          <div class="moField howrap">
+            <div>
+              <div class="moHeader">모임 시작일</div>
+              <input id="piStartDate" type='date' class="ipdate" placeholder="start date" name="startdate" required maxlength="40" auto-validate/>  
+            </div>
+
+            <div> 
+              <div class="moHeader">모임 종료일</div>
+              <input id="piEndDate" type='date' class="ipdate" placeholder="end date" name="enddate"  required maxlength="40" auto-validate/>
+            </div>
+          </div>
+          
+
+          <div class="moField">
+            <div class="moHeader">ICO 배분량</div>
+            <div class="hoField">
+              <input id="piIcoPercent1" class="percent" name="percent1" placeholder="percent1" value="50%" required maxlength="40" readonly auto-validate/>  
+              <input id="piIcoPerVal1" class="percent" placeholder="percent val1" value="POS" required maxlength="50" readonly auto-validate/>  
+            </div>
+            <div class="hoField">
+              <input id="piIcoPercent2" class="percent" placeholder="percent2" value="10%" required maxlength="40" readonly auto-validate/>  
+              <input id="piIcoPerVal2" class="percent" placeholder="percent val2" value="수수료" required maxlength="40" readonly auto-validate/>  
+            </div>
+            <div class="hoField">
+              <input id="piIcoPercent3" class="percent" placeholder="percent3" value="{{percent3::change}}" required maxlength="40" auto-validate/>  
+              <input id="piIcoPerVal3" class="percent" placeholder="percent val3" value="Leader" required maxlength="40" auto-validate/>  
+            </div>
+            <div class="hoField">
+              <input id="piIcoPercent4" class="percent" placeholder="percent3" value="{{percent4::change}}" required maxlength="40" auto-validate/>  
+              <input id="piIcoPerVal3" class="percent" placeholder="percent val3" value="공간비용" required maxlength="40" auto-validate/>  
+            </div>
+            <div class="hoField">
+              <input id="piIcoPercent5" class="percent" placeholder="percent3" value="{{percent5::change}}" required maxlength="40" auto-validate/>  
+              <input id="piIcoPerVal3" class="percent" placeholder="percent val3" value="운영비용" required maxlength="40" auto-validate/>  
+            </div>
+
+            <paper-button raised>+추가하기</paper-button>
+          </div>
+
+
+
+          <!-- <div class="moField">
+            <div class="moHeader">교정 선택*</div>
+            <iron-selector id="rgState" attr-for-selected="name" selected="0">
+              <paper-button name="0" class="btnType">Key Points</paper-button>
+              <paper-button name="1" class="btnType">Complete Guide</paper-button>
+            </iron-selector>    
+          </div>
+
+          <div class="moField">
+            <div class="moHeader">타입 선택*</div>
+            <paper-dropdown-menu id="piPtype1" label="Type of paper" class="centered">
+              <paper-listbox id="plPtype1" slot="dropdown-content" selected="{{ptype1_idx}}">
+                <paper-item value="Academic">Academic</paper-item>
+                <paper-item value="Admissions / SOP">Admissions / SOP</paper-item>
+                <paper-item value="Business">Business</paper-item>
+                <paper-item value="Resume / CV">Resume / CV</paper-item>
+                <paper-item value="TOEFL / IELTS">TOEFL / IELTS</paper-item>
+                <paper-item value="Personal">Personal</paper-item>
+                <paper-item value="Other">Other</paper-item>                
+              </paper-listbox>
+            </paper-dropdown-menu>                  
+
+            <paper-dropdown-menu id="piPtype2" label="Subject area" class="centered">
+              <paper-listbox id="plPtype2" slot="dropdown-content" selected="{{ptype2_idx}}">
+                <paper-item value="Business & Economics">Business & Economics</paper-item>
+                <paper-item value="Sciences & Mathematics">Sciences & Mathematics</paper-item>
+                <paper-item value="Engineering & Technology">Engineering & Technology</paper-item>
+                <paper-item value="Arts & Humanities">Arts & Humanities</paper-item>
+                <paper-item value="Social Sciences">Social Sciences</paper-item>
+                <paper-item value="Medicine">Medicine</paper-item>
+                <paper-item value="Law">Law</paper-item>
+                <paper-item value="Other">Other</paper-item>               
+              </paper-listbox>
+            </paper-dropdown-menu>                              
+          </div>
+
+          <div class="moField">
+            <div class="moHeader">스타일 선택*</div>
+            <iron-selector id="rgStyle" attr-for-selected="name" selected="American">
+              <paper-button name="American" class="btnType">American</paper-button>
+              <paper-button name="British" class="btnType">British</paper-button>
+            </iron-selector>    
+          </div>
+
+          <div class="moField">
+            <div class="moHeader">파일 업로드(5Mb이하의 워드 doc,docx 파일만 가능합니다)*</div>
+            <input id="file_word1" name="word1" type="file" accept=".doc, .docx">
+          </div> -->
+
+          <div class="moField">
+            <div class="moHeader">모임 설명</div>
+            <textarea id="taMessage" placeholder="모임 설명" name="message" value="{{message::input}}" required rows="3"></textarea>  
+          </div>          
+        </div>
+
+        <div class="priceWrapper">
+          <!-- <div class="numwords">
+            <span class="word1">[[numwords]] 단어 · </span><span class="word2">[[_moneyFormat(price)]]원</span>
+          </div> -->
+
+          <paper-button id="pbNext" on-tap="payment" disable>참여하기</paper-button>
+        </div>      
     </div>
+
+    <my-token-dialog id="tokenDlog" title="[[title]]" content="[[message]]"  modal></my-token-dialog>
   </template>
 
   <script>
     class MyView1 extends Polymer.Element {
       static get is() { return 'my-view1'; }
+
+      static get properties() {
+        return { 
+
+        }
+      }
+
+      ready() {
+        super.ready();
+
+      }
+
+      payment() {
+        var body = document.querySelector('body');
+        Polymer.dom(body).appendChild(this.$.tokenDlog); 
+        this.$.tokenDlog.open();
+      }
     }
 
     window.customElements.define(MyView1.is, MyView1);

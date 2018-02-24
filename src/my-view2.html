@@ -1,37 +1,161 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="chat-msg.html">
 
 <dom-module id="my-view2">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
-
-        padding: 10px;
+  <template>    
+    <style>
+     .chatWrapper {
+        height: 100%;
+        background-color: #f1f1f1;
       }
+
+      .flex {
+        @apply(--layout-flex);
+      }
+
+      .chatList {
+        height: 500px;
+        overflow-y: scroll;
+        padding-bottom: 15px; 
+      }
+
+      .sendBox {
+        @apply(--layout-horizontal);
+      }   
+
+      iron-list {     
+        height: 100%;
+      }
+
     </style>
 
-    <div class="card">
-      <div class="circle">2</div>
-      <h1>View Two</h1>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-      <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
+   <div class="chatWrapper">
+      <div class="chatList">        
+        <iron-list id="ilist" items="[[messages]]" as="msg">
+          <template>            
+            <chat-msg class="chatmsg"></chat-msg>
+          </template>
+        </iron-list>        
+      </div>
+      <div class="sendBox">
+        <paper-input id="piMsg" class="flex" label="Message..." on-keyup="checkKey"></paper-input>
+        <paper-button on-tap="sendMessageForInput" raised>Send</paper-button>
+            <paper-fab icon="icons:cloud-upload" id="btnSend" on-tap="imgUpload"></paper-fab>
+      </div>      
     </div>
   </template>
 
   <script>
     class MyView2 extends Polymer.Element {
       static get is() { return 'my-view2'; }
+
+      static get properties() {
+        return {
+          messages: {
+            type: Array       
+          },
+
+          users: {
+            type: Array,
+            notify: true
+          }        
+        };
+      }
+
+      ready() {
+        super.ready();
+        
+        this.users = [
+          {username: "User1", avatar: "../images/avatar_1.png"},
+          {username: "User2", avatar: "../images/avatar_2.png"},
+          {username: "User3", avatar: "../images/avatar_3.png"},
+          {username: "User4", avatar: "../images/avatar_4.png"}       
+        ];
+
+        this.messages = [
+          {username: "User1", avatar: "../images/avatar_1.png", content: "Hi, nice to meet you guys lol", timestamp: "10 minutes ago", isCommonMsg: false},
+          {username: "User2", avatar: "../images/avatar_2.png", content: "Hi, nice to meet you guys lol", timestamp: "3 minutes ago", isCommonMsg: false},
+          {username: "User3", avatar: "../images/avatar_3.png", content: "Hi, nice to meet you guys lol", timestamp: "a minute ago", isCommonMsg: false},
+          {username: "User4", avatar: "../images/avatar_4.png", content: "Hi, nice to meet you guys lol", timestamp: "now", isCommonMsg: false}
+        ];
+      }
+      
+      checkKey(e) {     
+        if(e.keyCode==13) {
+          this.sendMessageForInput();
+        }
+      }
+
+      sendMessageForInput() {
+        var msg = this.$.piMsg.value;     
+        if(msg!=null && msg!=""){
+          var userdata = {username: "Will", avatar: "../images/avatar_0.png"};
+          this.sendMessage(msg, userdata)
+        }     
+      }
+
+      sendMessage(content, userdata) {  
+        var data = {content: content, timestamp: "now"};
+        for (var key in userdata) {
+            data[key] = userdata[key];
+        }         
+        this.push("messages", data);        
+
+        this.$.piMsg.value = "";
+        this.moveScrollBottom();
+      }
+
+      sendNotiMessage(content) {
+        var notiMsg = {username: "", avatar: "", content: content, timestamp: "now", isCommonMsg: true};
+        this.push("messages", notiMsg);
+
+        this.moveScrollBottom();
+      }
+
+      moveScrollBottom() {      
+        this.$.ilist.scrollToIndex(this.messages.length-1);
+      }    
+
+      /* for testing */
+      testAddUser() {
+        var randIdx = Math.floor(Math.random() * 100);
+        var newUser = {username: "NewUser"+randIdx, avatar: "../images/avatar_5.png"};      
+        this.push("users", newUser);
+        
+        this.sendNotiMessage(newUser.username + " joined!");      
+      }
+
+      testRemoveUser() {
+        if(this.users.length>0){        
+          var user = this.pop("users");
+          this.sendNotiMessage(user.username + " leaved!");     
+        } else {
+          alert("no user in the room");
+        } 
+      }
+
+      testSendMsg() {
+        if(this.users.length>0){
+          var useridx = Math.floor(Math.random() * (this.users.length-1));        
+          var user = this.users[useridx];
+          var content = "Hello, this is test send message.";
+          this.sendMessage(content, user);
+        } else {
+          alert("no user in the room");
+        }     
+      }
+
+      testAddRandMsg() {
+        for(var i=0; i<100; i++){
+          this.testSendMsg();
+        }
+      }
     }
 
     window.customElements.define(MyView2.is, MyView2);

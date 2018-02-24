@@ -1,0 +1,232 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/vaadin-charts/vaadin-charts.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-token-dialog">
+	<template>
+      <style include="shared-styles">
+      	.detailWrapper {
+      		width: 620px;
+      		height: 660px;      		
+      		background: #eee;
+      		padding-top: 35px;
+      		text-align: center;
+      	}
+
+        .sWrapper {
+          overflow: auto;
+          height: 500px;
+        }
+
+      	.btnClose {
+      		position: absolute;
+      		right: 15px;
+      		top: 10px;
+      	}
+
+      	.detailWrapper .price {
+      		margin: 0 auto;
+      		font-size: 22px;
+      		font-weight: 800;
+      	}
+
+
+    		.htitle{
+    			font-size: 36px;
+    			font-weight: 800;
+    			text-align: center;
+    			color: #000000;			
+
+    		}
+
+    		.selWrapper .btn {
+    			width: 350px;
+    			height: 40px;
+    			border-radius: 20px;
+    			/*border: solid 2px #d2a270;*/
+    			color: #FFF;
+    			background: #02be29;
+    			font-size: 18px;
+    			font-weight: bold;
+    			line-height: 40px;
+    			margin: 0 auto;
+    			text-align: center;
+    			cursor: pointer;
+    			margin-top: 30px;
+
+    		}
+
+        .dayWrapper {
+          font-size: 18px;
+        }
+
+        .btnsWrapper {
+          margin: 10px;
+        }
+
+        .address {
+          font-weight: bold;
+          font-size: 16px;
+        }
+
+        #pbNext {
+          width: 150px;
+          height: 40px;
+          border-radius: 20px;
+          /*border: solid 2px #d2a270;*/
+          color: #FFF;
+          background: #02be29;
+        }
+      </style>      	       
+
+      <div class="detailWrapper">
+        
+        <paper-icon-button
+          class="btnClose"
+          icon="my-icons:close"            
+          dialog-dismiss
+        >
+        </paper-icon-button> 
+
+
+        <div class="sWrapper">
+          <h2>참여 하기</h2>
+
+          <div class="dayWrapper">
+            <p>모임 제목: [[title]]</p>
+            <p>1기 / 모집인원: 10명 / 최대 발행량 : 200 MOIM</p>
+            <p>모집 마감일 : 2018.02.24 ~ 2018.02.28</p>
+            <p>모임 기한 : 2018.03.01 ~ 2018.06.30</p>
+            <p>모임 내용 : [[content]]</p>
+          </div>
+
+          <vaadin-pie-chart id="pie">
+            <chart-title>Stake Chart</chart-title>
+            <tooltip point-format="{series.name}: <b>{point.percentage:.1f}%</b>">
+            </tooltip>
+            <plot-options>
+              <pie allow-point-select="true" cursor="pointer">
+                <data-labels enabled="true" format="{point.percentage:.1f} %">
+                </data-labels>
+              </pie>
+            </plot-options>
+
+            <data-series name="Browser share">
+              <data>
+                 <point>
+                  <y>10</y>
+                  <name>Leader</name>
+                  <color>
+                    <stops position="0" color="#8A97B4"></stops>                            
+                    <stops position="1" color="#8A97B4"></stops>                            
+                    <radial-gradient cx="0.5" cy="0.3" r="0.7"></radial-gradient>
+                  </color>
+                </point>
+                <point>
+                  <y>10</y>
+                  <name>운영비용</name>
+                  <color>
+                    <stops position="0" color="#D8E4A1"></stops>                            
+                    <stops position="1" color="#D8E4A1"></stops>                            
+                    <radial-gradient cx="0.5" cy="0.3" r="0.7"></radial-gradient>
+                  </color>
+                </point>
+                <point>
+                  <y>50</y>
+                  <name>POS</name>
+                  <color>
+                    <stops position="0" color="#c13c3c"></stops>                            
+                    <stops position="1" color="#c13c3c"></stops> 
+                    <radial-gradient cx="0.5" cy="0.3" r="0.7"></radial-gradient>
+                  </color>
+                </point>  
+                <point>
+                  <y>20</y>
+                  <name>공간비용</name>
+                  <color>
+                    <stops position="0" color="#485977"></stops>              
+                    <stops position="1" color="#485977"></stops>     
+                    <radial-gradient cx="0.5" cy="0.3" r="0.7"></radial-gradient>         
+                  </color>
+                </point>
+                <point>
+                  <y>10</y>
+                  <name>수수료</name>
+                  <color>
+                    <stops position="0" color="#327de0"></stops>                            
+                    <stops position="1" color="#327de0"></stops>                            
+                    <radial-gradient cx="0.5" cy="0.3" r="0.7"></radial-gradient>   
+                  </color>
+                </point>   
+              </data>
+            </data-series>
+          </vaadin-pie-chart>
+        
+
+          <div class="paymWrapper">
+
+          </div>    
+        </div>
+
+        <div class="btnsWrapper">
+          <paper-button id="pbNext" on-tap="payment">chain 생성하기</paper-button>
+        </div>
+
+        <paper-spinner id="spinner"></paper-spinner>
+        <div id="addressWrap" hidden>
+          <div class="address">0x2eae911168Fca80d950C63F762D9e6EfaDeDC80</div>
+          <div class="desc">Wallet Address : Please copy & store at private spot</div>
+        </div>
+      	<!-- <div class="selWrapper">
+      	 <div class="btn" on-click="paymentCard">신용카드</div>
+      	 <div class="btn" on-click="paymentPhone">휴대폰</div>
+      	 <div class="btn" on-click="paymentBank">무통장 입금</div>
+      	</div> -->
+	   	      
+	  </div>
+    </template>
+
+    <script>
+      class MyTokenDialog extends Polymer.mixinBehaviors([Polymer.PaperDialogBehavior], Polymer.Element) {
+      	static get is() { return 'my-token-dialog'; }
+
+      	static get properties() {
+  	      return {        
+  	      	
+  	      	paytype: Number, 	      	
+
+  	      	data: Object,
+            title: String,
+  	      	
+  	      }
+	     }	       
+
+       ready() {
+        super.ready();
+
+       }
+
+	      _moneyFormat(n) {
+          return n.toLocaleString();
+      	}        
+       
+
+	      payment(e) {
+
+          this.$.spinner.active = !this.$.spinner.active;
+          var that = this;
+          setTimeout(function(){
+            that.$.addressWrap.removeAttribute("hidden");         
+            that.$.spinner.active = !that.$.spinner.active;
+          }, 3000);
+        }
+      }
+
+      window.customElements.define(MyTokenDialog.is, MyTokenDialog);
+    </script>    
+</dom-module>
